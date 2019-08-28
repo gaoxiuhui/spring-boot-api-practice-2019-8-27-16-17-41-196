@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,22 +29,25 @@ public class CompaniesController {
 		// 公司：id  基本信息  员工
 		add(new Company(1,"百度",employees));	
 	}};
+	
 	// 获取列表  查询
 	@GetMapping
 	public ResponseEntity<List<Company>> queryCompanies() {
 		
 		return ResponseEntity.ok(companies);
 	}
-//	//获取某一个特定的公司
-//	@GetMapping(path = "/{id}")
-//    public ResponseEntity<Company> queryCompany(@PathVariable Integer id) {
-//		for(Company company:companies) {
-//       	if(company.getId()==id) {
-//       		 return ResponseEntity.ok(company);      
-//       	}
-//        }
-//        return null;
-//	}
+	
+	//获取某一个特定的公司
+	@GetMapping(path = "/{id}")
+    public ResponseEntity<Company> queryCompany(@PathVariable Integer id) {
+		for(Company company:companies) {
+       	if(company.getId()==id) {
+       		 return ResponseEntity.ok(company);      
+       	}
+        }
+        return null;
+	}
+	
 	//获取某一个公司下的所有员工
 		@GetMapping(path = "/{id}")
 	    public ResponseEntity<List<Employee>> queryEmployees(@PathVariable Integer id) {
@@ -54,6 +59,7 @@ public class CompaniesController {
 	        }
 	        return null;
 		}
+		
       //分页查询	
 		@GetMapping("/pages")
 	    public ResponseEntity<List<Company>> getCompaiesByPage(@RequestParam int page,@RequestParam int pageSize){			
@@ -66,11 +72,29 @@ public class CompaniesController {
 	            return ResponseEntity.ok(pageCompanies);
 	        }
 		}
- 	 //添加一个公司	
+		
+ 	 //添加一个新的公司
 		@PostMapping(consumes="application/json")
 		public ResponseEntity<Company> addCompany(@RequestBody Company company){
 			companies.add(company);
 			return ResponseEntity.status(HttpStatus.CREATED).build();   
 		}	
 		
+	//更新一个公司的基本信息	
+		@PutMapping(consumes = "application/json")
+		 public ResponseEntity<Company> putCompany(@RequestBody Company companyUpdate) {
+		    for (Company company:companies) {
+		     if (company.getId() == companyUpdate.getId()) {
+		    	 company.setBaseInformation(companyUpdate.getBaseInformation());
+		    	 company.setEmployee(companyUpdate.getEmployee());
+		         }
+		 }
+		     return ResponseEntity.status(HttpStatus.CREATED).build();
+		 }
+	
+   //删除一个公司
+	    @DeleteMapping("/{id}")
+		public void deleteCompanyByID(@PathVariable Integer id){
+	    	companies.remove(id);
+		} 
 }
