@@ -65,4 +65,19 @@ public class CompaniesControllerTest {
 		   .andExpect(MockMvcResultMatchers.content()
 		   .string("[{\"id\":1},{\"id\":2}]"));
 		}	
+	//分页查询
+	
+		@Test
+	    public void should_return_ok_and_content_when_query_companies_by_page() throws Exception {
+			//Given
+			MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/companies/pages?page=1&pageSize=1");
+			//When
+			ResultActions performResult = mockMvc.perform(requestBuilder);
+			 //Then
+			performResult
+			.andDo(MockMvcResultHandlers.print())
+		    .andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.content()
+			.string("[{\"id\":1,\"baseInformation\":\"百度\",\"employee\":[{\"id\":1},{\"id\":2}]}]"));
+		}	
 }
