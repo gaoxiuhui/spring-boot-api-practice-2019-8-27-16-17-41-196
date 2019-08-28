@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,4 +29,15 @@ public class CompaniesController {
 		
 		return ResponseEntity.ok(companies);
 	}
+	//获取某一个特定的公司
+	@GetMapping(path = "/{id}")
+    public ResponseEntity<Company> queryCompany(@PathVariable Integer id) {
+		for(Company company:companies) {
+       	if(company.getId()==id) {
+       		 return ResponseEntity.ok(company);      
+       	}
+        }
+        return null;
+	}
+	
 }
