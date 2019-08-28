@@ -1,6 +1,6 @@
 
 server:
-  port: 8089
+  port: 8084
 logging.file: logs/application.log
 logging:
   level:

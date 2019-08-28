@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,7 +54,7 @@ public class CompaniesController {
 	        }
 	        return null;
 		}
-  //分页查询	
+      //分页查询	
 		@GetMapping("/pages")
 	    public ResponseEntity<List<Company>> getCompaiesByPage(@RequestParam int page,@RequestParam int pageSize){			
 			if(companies.size()<=(page-1)*pageSize) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -64,7 +66,11 @@ public class CompaniesController {
 	            return ResponseEntity.ok(pageCompanies);
 	        }
 		}
- 		
-		
+ 	 //添加一个公司	
+		@PostMapping(consumes="application/json")
+		public ResponseEntity<Company> addCompany(@RequestBody Company company){
+			companies.add(company);
+			return ResponseEntity.status(HttpStatus.CREATED).build();   
+		}	
 		
 }
