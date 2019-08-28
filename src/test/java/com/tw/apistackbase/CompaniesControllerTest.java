@@ -37,18 +37,32 @@ public class CompaniesControllerTest {
 	   .andExpect(MockMvcResultMatchers.content()
 	   .string("[{\"id\":1,\"baseInformation\":\"百度\",\"employee\":[{\"id\":1},{\"id\":2}]}]"));
 	}	
-	//获取某一个特定的公司
-	@Test
-	public void should_return_ok_and_content_when_query_a_company() throws Exception {
-	   //Given
-	   MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/companies/1");
-	   //When
-	   ResultActions performResult = mockMvc.perform(requestBuilder);
-	   //Then
-	   performResult
-	   .andDo(MockMvcResultHandlers.print())
-	   .andExpect(status().isOk())
-	   .andExpect(MockMvcResultMatchers.content()
-	   .string("{\"id\":1,\"baseInformation\":\"百度\",\"employee\":[{\"id\":1},{\"id\":2}]}"));
-	}	
+//	//获取某一个特定的公司
+//	@Test
+//	public void should_return_ok_and_content_when_query_a_company() throws Exception {
+//	   //Given
+//	   MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/companies/1");
+//	   //When
+//	   ResultActions performResult = mockMvc.perform(requestBuilder);
+//	   //Then
+//	   performResult
+//	   .andDo(MockMvcResultHandlers.print())
+//	   .andExpect(status().isOk())
+//	   .andExpect(MockMvcResultMatchers.content()
+//	   .string("{\"id\":1,\"baseInformation\":\"百度\",\"employee\":[{\"id\":1},{\"id\":2}]}"));
+//	}	
+	//获取某一个公司下的所有员工
+		@Test
+		public void should_return_ok_and_content_when_query_all_employees_of_a_company() throws Exception {
+		   //Given
+		   MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/companies/1");
+		   //When
+		   ResultActions performResult = mockMvc.perform(requestBuilder);
+		   //Then
+		   performResult
+		   .andDo(MockMvcResultHandlers.print())
+		   .andExpect(status().isOk())
+		   .andExpect(MockMvcResultMatchers.content()
+		   .string("[{\"id\":1},{\"id\":2}]"));
+		}	
 }

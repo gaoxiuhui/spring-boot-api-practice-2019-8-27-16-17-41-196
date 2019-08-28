@@ -29,15 +29,25 @@ public class CompaniesController {
 		
 		return ResponseEntity.ok(companies);
 	}
-	//获取某一个特定的公司
-	@GetMapping(path = "/{id}")
-    public ResponseEntity<Company> queryCompany(@PathVariable Integer id) {
-		for(Company company:companies) {
-       	if(company.getId()==id) {
-       		 return ResponseEntity.ok(company);      
-       	}
-        }
-        return null;
-	}
-	
+//	//获取某一个特定的公司
+//	@GetMapping(path = "/{id}")
+//    public ResponseEntity<Company> queryCompany(@PathVariable Integer id) {
+//		for(Company company:companies) {
+//       	if(company.getId()==id) {
+//       		 return ResponseEntity.ok(company);      
+//       	}
+//        }
+//        return null;
+//	}
+	//获取某一个公司下的所有员工
+		@GetMapping(path = "/{id}")
+	    public ResponseEntity<List<Employee>> queryEmployees(@PathVariable Integer id) {
+			for(Company company:companies) {
+	       	if(company.getId()==id) {
+	       		List<Employee> employees=company.getEmployee();  
+	       		return ResponseEntity.ok(employees);   
+	       	}
+	        }
+	        return null;
+		}
 }
