@@ -38,7 +38,7 @@ public class CompaniesController {
 	}
 	
 	//获取某一个特定的公司
-	@GetMapping(path = "/{id}")
+	@GetMapping(path = "/{id}/employees")
     public ResponseEntity<Company> queryCompany(@PathVariable Integer id) {
 		for(Company company:companies) {
        	if(company.getId()==id) {
@@ -53,6 +53,7 @@ public class CompaniesController {
 	    public ResponseEntity<List<Employee>> queryEmployees(@PathVariable Integer id) {
 			for(Company company:companies) {
 	       	if(company.getId()==id) {
+	       		//通过get set 获取值
 	       		List<Employee> employees=company.getEmployee();  
 	       		return ResponseEntity.ok(employees);   
 	       	}
@@ -61,7 +62,7 @@ public class CompaniesController {
 		}
 		
       //分页查询	
-		@GetMapping("/pages")
+		@GetMapping
 	    public ResponseEntity<List<Company>> getCompaiesByPage(@RequestParam int page,@RequestParam int pageSize){			
 			if(companies.size()<=(page-1)*pageSize) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	        else {
@@ -85,8 +86,9 @@ public class CompaniesController {
 		 public ResponseEntity<Company> putCompany(@RequestBody Company companyUpdate) {
 		    for (Company company:companies) {
 		     if (company.getId() == companyUpdate.getId()) {
-		    	 company.setBaseInformation(companyUpdate.getBaseInformation());
-		    	 company.setEmployee(companyUpdate.getEmployee());
+//		    	 company.setBaseInformation(companyUpdate.getBaseInformation());
+//		    	 company.setEmployee(companyUpdate.getEmployee());
+		    	 company=companyUpdate;
 		         }
 		 }
 		     return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -94,7 +96,12 @@ public class CompaniesController {
 	
    //删除一个公司
 	    @DeleteMapping("/{id}")
-		public void deleteCompanyByID(@PathVariable Integer id){
-	    	companies.remove(id);
+		public ResponseEntity<Company> deleteCompanyByID(@PathVariable Integer id){
+	    	for (int i=0;i<companies.size();i++) {
+			     if (companies.get(i).getId() == id) {	
+			    	 companies.remove(i);
+			         }
+			 }
+			     return ResponseEntity.status(HttpStatus.OK).build();
 		} 
 }
